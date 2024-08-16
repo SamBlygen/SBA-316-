@@ -9,7 +9,7 @@ document.body.appendChild(div);
 
 slide.oninput = addStars;
 
-function addStars(){
+function addWords(){
 div.innerText = "";
 for(let i = 0; i <this.value; i++){
   div.append("")
