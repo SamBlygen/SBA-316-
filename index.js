@@ -7,12 +7,23 @@ let gameStarted = false;
 const slide = document.createElement("input");
 slide.type = "range";
 slide.value = 0,
-  slide.max = 7;
+  slide.max = 6;
 slide.style.width = "300px";
 document.body.appendChild(slide);
 
-const words = document.querySelectorAll(".word")
-const container = document.getElementById("wordContainer")
+
+const wordContainer = document.getElementById("wordContainer");
+const sliderValue = document.getElementById("sliderValue");
+
+
+const words = correctOrder.map(word =>{
+  const wordElement = document.createElement("div");
+  wordElement.className = "word";
+  wordElement.innerText = word;
+  return wordElement;
+});
+
+words.forEach(word => wordContainer.appendChild(word));
 
 
 function startGame() {
@@ -21,16 +32,14 @@ function startGame() {
   document.getElementById('message').innerText = "";
   document.getElementById('attempts').innerText = "Attempts left: " + maxAttempts;
   gameStarted = true;
-  playGame();
 }
 
 slide.addEventListener("input",()=>{
   if (!gameStarted)
     return;
-}
- )
 
-const slideValue = parseInt(slide.Value);
+
+const slideValue = parseInt(slide.value);
 const selectedWord = words[slideValue];
 if(!currentOrder.includes(selectedWord.textContent)){
   container.appendChild(selectedWord);
@@ -38,14 +47,16 @@ if(!currentOrder.includes(selectedWord.textContent)){
   attempts++;
   checkOrder();
 }
+if(attempts >= maxAttempts){
+  endGame(false);
+}
+});
 
-
-  if(attempts >= maxAttempts){
-    endGame(false);
-  }
+  
+  
  
 function checkOrder(){
-  if (currentOrder.length=== correctOrder.length){
+  if (currentOrder.length === correctOrder.length){
     if(currentOrder.every((word,index) => word === correctOrder[index])){
       endGame(true);
     }else{
@@ -57,11 +68,18 @@ function checkOrder(){
 
 }
 
-function endGame()
+function endGame(won){
+  gameStarted = false;
+  if (won){
+    document.getElementById('message').innerText = "Congratulations! You've arranged the words correctly!"
+  }else {
+    document.getElementById('message').innerText = "Sorry, you lose!";
+  }
+}
 
 
 
-
+startGame();
 
 
 
@@ -76,5 +94,3 @@ function endGame()
 // wordContainer.style.border = "1px solid";
 // wordContainer.style. marginBottom = "20px";
 
-
-const sortedWord = document.create
