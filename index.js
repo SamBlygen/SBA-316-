@@ -1,58 +1,63 @@
 const maxAttempts = 10;
 let attempts = 0;
-let correctOrder = ["Radiant", "Joyful", "Cheerful","blissful", "Hopeful", "Vibrant","Encouraging"]
+let correctOrder = ["Radiant", "Joyful", "Cheerful", "blissful", "Hopeful", "Vibrant", "Encouraging"]
 let currentOrder = []
 let gameStarted = false;
 
-const slide= document.createElement("input");
+const slide = document.createElement("input");
 slide.type = "range";
 slide.value = 0,
-  slide.max = 25;
+  slide.max = 7;
 slide.style.width = "300px";
 document.body.appendChild(slide);
 
 const words = document.querySelectorAll(".word")
+const container = document.getElementById("wordContainer")
 
 
 function startGame() {
   attempts = 0;
-  correctAnswer = Math.floor(Math.random() * 10) + 1;
+  currentOrder = [];
   document.getElementById('message').innerText = "";
   document.getElementById('attempts').innerText = "Attempts left: " + maxAttempts;
   gameStarted = true;
   playGame();
 }
 
-function playGame() {
+slide.addEventListener("input",()=>{
   if (!gameStarted)
     return;
-  let guess = window.prompt("Enter your guess (between 1 and 10):");
-  if (isNaN(guess) || guess < 1 || guess > 10) {
-    alert("Please enter a number between 1 and 10.");
-    return;
-  }
+}
+ )
+
+const slideValue = parseInt(slide.Value);
+const selectedWord = words[slideValue];
+if(!currentOrder.includes(selectedWord.textContent)){
+  container.appendChild(selectedWord);
+  currentOrder.push(selectedWord.textContent);
   attempts++;
-  if (guess === correctAnswer) {
-    document.getElementById('message').innerText = "Congratulations! You guessed the correct number!";
-    window.alert("You won! The correct number was " + correctAnswer);
-    gameStarted = false;
-  } else if (attempts < maxAttempts) {
-    if (guess > correctAnswer) {
-      document.getElementById('message').innerText = "Too high! Try again.";
-    } else {
-      document.getElementById('message').innerText = "Too low! Try again.";
-    }
-    document.getElementById('attempts').innerText = "Attempts left: " + (maxAttempts - attempts - 1);
-    playGame();
-  } else {
-    document.getElementById('message').innerText = "Sorry, you're out of attempts! The correct number was " + correctAnswer + ".";
-    window.alert("Game over! The correct number was " + correctAnswer);
-    gameStarted = false;
-  }
+  checkOrder();
 }
 
 
+  if(attempts >= maxAttempts){
+    endGame(false);
+  }
+ 
+function checkOrder(){
+  if (currentOrder.length=== correctOrder.length){
+    if(currentOrder.every((word,index) => word === correctOrder[index])){
+      endGame(true);
+    }else{
+      document.getElementById('message').inner= "Incorrect. Try again";
+      attempts--;
+    }
+  }
+  document.getElementById("attempts").innerText = "attempts left; "+ (maxAttempts- attempts);
 
+}
+
+function endGame()
 
 
 
