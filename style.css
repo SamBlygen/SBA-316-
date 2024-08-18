@@ -4,3 +4,9 @@
   border: 1px solid #ccc;
   margin-top: 10px;
 }
+body {
+  font-family: Impact, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+  color: rgb(61, 42, 165);
+  cursor: pointer;
+}

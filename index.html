@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guessing Game</title>
+    <title>Affirmation Reveal</title>
     <style>
         body {
             text-align: center;
             margin-top: 50px;
+            background: url('./background.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        
+
+        #wordContainer.word {
+            font-size: 1.5em;
+            margin: 10px;
+            display: inline-block;
         }
     </style>
 </head>
+
 <body>
-    <h1>Affirmations of Life!</h1>
-    <p>Choose a number and get a dose of positivity!</p>
+    <h1><strong>Affirmations of Life!</strong></h1>
+
+    <p><strong>Slide slowly to get a dose of positivity!</strong></p>
     <button id="start-button">Start Game</button>
-    <spa id="slide"></span>
+    <div id="slide-container">
+        <input id="range" type="range" value="0" max="6" style="width: 300px;">
+    </div>
+    <div id="starContainer"></div>
+    <div id="wordContainer"></div>
     <div id="message"></div>
     <div id="attempts"></div>
-    <div id="wordContainer"></div>
+    <p><strong>Add an affirmation that you would like me to add to our word bank.</strong></p>
+    <input type="text" id="userInput" required pattern="[A-Za-z]{3,}" placeholder="Enter a word (3 letter min)">
+
+    <form id="affirmForm">
+        <input type="email" id="formInput" placeholder="email address" required>
+        <button type="submit">submit</button>
+    </form>
+    <div id="childContainer"></div>
+    <script src="./style.css"></script>
     <script src="./index.js"></script>
 </body>
+
 </html>

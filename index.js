@@ -1,136 +1,115 @@
 const maxAttempts = 5; // initially had 10 attempts but decided to change it to a lower number
 let attempts = 0;
-let correctOrder = ["✨Radiant ✨", "😊Joyful😊", "🎉Cheerful🎉", "😊Blissful😊", "🙏Blessed🙏", "🩷Vibrant🩷", "💕Worthy💕"]// i really wanted 25 words but game kept breaking
+let correctOrder = ["✨Radiant ✨", "😂Joyful😂", "🎉Cheerful🎉", "😊Thankful😊", "🙏Blessed🙏", "🩷Vibrant🩷", "💕Worthy💕", "💪Fearless💪", "🌍Inspire🌍", "🏆Will-Power🏆"]
 let currentOrder = []
 let gameStarted = false;
 
-const slide = document.createElement("input");
-slide.type = "range";
-slide.value = 0,
-  slide.max = correctOrder.length -1;
-slide.style.width = "300px";
-document.body.appendChild(slide);
 
 
-const wordContainer = document.createElement('div');
-wordContainer.id = 'wordContainer';
+const slide = document.getElementById("range");
 
-// totally forgot about the Document fragment requirement and had to go back in and TRY to adjust. 
-const f = document.createDocumentFragment();
+const wordContainer = document.getElementById("wordContainer");
+const starContainer = document.getElementById("starContainer");
 
-correctOrder.forEach(word =>{
-  const wordElement = document.createElement("div");
-  wordElement.className = "word";
-  wordElement.innerText = word;
-  wordElement.style.filter = "blur(5px)";
-  wordElement.style.transition = 'filter 0.3s ease';
-  f.appendChild(wordElement)
+correctOrder.forEach(word => {
+    const wordElement = document.createElement("div");
+    wordElement.className = "word";
+    wordElement.innerHTML = `<strong>${word}</strong>`;
+    wordElement.style.opacity = "0";
+    wordElement.style.transition = "opacity 0.3 ease";
+    wordContainer.style.marginBottom = "30px";
+    wordContainer.appendChild(wordElement);
 });
 
-wordContainer.appendChild(f);
-document.body.appendChild(wordContainer);
-
-
-document.querySelector('#startButton').addEventListener("click", startGame);
-
-
-slide.addEventListener("input", ()=>{
-  if (!gameStarted)
-        return;
-}
-)
-
-const slideValue = parseInt(slide.value);
-if (slideValue=== parseInt(slide.max)){
-  revealWords();
-}else{
-  window.alert("Keep sliding until you reach the end of the bar!");
-
-}
-
 function startGame() {
-  attempts = 0;
-  currentOrder = [];
-  document.getElementById('message').innerText = "";
-  document.getElementById('attempts').innerText = "Attempts left: " + maxAttempts;
-  gameStarted = true;
+    attempts = 0;
+    currentOrder = [];
+    document.getElementById("message").innerText = "";
+    document.getElementById("attempts").innerText = "Attempts left: " + maxAttempts;
+    gameStarted = true;
 }
 
-function revealWords(){
-  const wordContainer = document.querySelector("wordContainer");
-  const firstWord = wordContainer.firstChild;
-}
+slide.addEventListener("input", () => {
+    if (!gameStarted) return;
+    const slideValue = parseInt(slide.value);
 
+    const words = document.querySelectorAll(".word");
+    words.forEach((word, index) => {
+        if (index <= slideValue) {
+            word.style.opacity = "1";
+        } else {
+            word.style.opacity = "0.5";
+        }
+    });
 
-if (firstWord){
-  wordContainer.childNodes.forEach(word=>{
-    word.style.filter = "none";
-  });
-}
+    starContainer.innerText = "🌟".repeat(slideValue + 1);
 
-function checkOrder(){
-  if (currentOrder.length === correctOrder.length){
-    if(currentOrder.every((word,index) => word === correctOrder[index])){
-      endGame(true);
-    }else{
-      document.getElementById('message').inner= "Incorrect. Try again";
-      attempts--;
+    if (slideValue === parseInt(slide.max)) {
+        window.alert("You've reached the end! Affirmation reveal!");
     }
-  }
-  document.getElementById("attempts").innerText = "attempts left; "+ (maxAttempts- attempts);
 
+    if (attempts >= maxAttempts) {
+        endGame(false);
+    }
+});
+
+function endGame(won) {
+    gameStarted = false;
+    if (won) {
+        document.getElementById("message").innerText = "Congratulations!";
+    } else {
+        document.getElementById("message").innerText = "Sorry, you lose!";
+    }
 }
 
+document.getElementById("start-button").addEventListener("click", startGame);
+
+slide.addEventListener("input",()=>{
+  const starContainer = document.getElementById("starContainer");
+  const sliderValue = parseInt(slide.value);
+})
+
+starContainer.innerHTML = "🌟". repeat(slide + 1 )
 
 
+const stars = stars.querySelectorAll("span");
+stars.forEach((star, index)=>{
+  star.style.color = index <= sliderValue/2 ? gold : silver;
 
-function endGame(won){
-  gameStarted = false;
-  if (won){
-    document.getElementById('message').innerText = "Congratulations! You've arranged the words correctly!"
-  }else {
-    document.getElementById('message').innerText = "Sorry, you lose!";
+});
+
+if (window.innerWidth < 600){
+  window.alert("Lets do this!")
+};
+
+document.getElementById("validateButton").addEventListener("click", () =>{
+  const userInput = document. getElementById("userInput");
+  if (!userInput.checkValidity()){
+    window.alert("Please enter a valid word with at least 3 letters.")
+  }else{
+    window.alert("You did it!")
   }
-}
+});
+
+document.getElementById("affirmForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const formInput = document.getElementById("formInput");
+  if (formInput === ""){
+    window.alert("Please complete!")
+  }else{
+    window.alert("You did it!");
+  }
+});
+
+const childContainer = document.getElementById("childContainer");
+const childNode = document. createElement("div");
+childNode.innerText = "Stars Revealed: ${slide.value}";
+childContainer.appendChild(childNode);
 
 
-startGame();
-revealWords();
-endGame(won);
-checkOrder();
-
-
-// slide.addEventListener("input",()=>{
-//   
-
-
-// const slideValue = parseInt(slide.value);
-// const selectedWord = words[slideValue];
-
-// if(!currentOrder.includes(selectedWord.textContent)){
-//   wordContainer.appendChild(selectedWord);
-//   currentOrder.push(selectedWord.textContent);
-//   attempts++;
-//   checkOrder();
-// }
-// if(attempts >= maxAttempts){
-//   endGame(false);
-// }
-// });
-
-// function revealWords(){
-//   words.forEach(word=>{
-//     word.style.filter = "none";
-//   });
-// }
-
-  
- 
-
-
-
-
-
+slide.addEventListener("input", () => {
+  childNode.innerText = "Stars Revealed: $ {parseInt(slide.value) + 1}";
+});
 
 
 
